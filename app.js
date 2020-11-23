@@ -82,6 +82,32 @@ app.get('/sum', (req, res) => {
 
   res.send(`The sum of ${a} and ${b} is ${a + b}`);
 });
+
+app.get('/cipher', (req, res) => {
+  let { text, shift } = req.query;
+  let cipher = '';
+  if (!text) {
+    res.send('Insert the value of text');
+  }
+  if (!shift) {
+    res.send('Insert the value of shift');
+  }
+  if (isNaN(shift) === true) {
+    res.send('Shift should be a number');
+  }
+  text = text.toUpperCase();
+  shift = Number(shift);
+  for (i = 0; i < text.length; i++) {
+    if (text.charCodeAt(i) < 65 || text.charCodeAt(i) > 90) {
+      res.send('Text should only contains letters');
+    }
+    console.log((text.charCodeAt(i) + shift - 65) % 26);
+    cipher += String.fromCharCode(
+      ((text.charCodeAt(i) + shift - 65) % 26) + 65
+    );
+  }
+  res.send(cipher);
+});
 app.listen(8000, () => {
   console.log('Express server is listening on port 8000!');
 });
