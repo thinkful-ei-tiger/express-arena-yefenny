@@ -1,3 +1,4 @@
+const { query } = require('express');
 const express = require('express');
 const morgan = require('morgan');
 
@@ -58,6 +59,29 @@ app.get('/greetings', (req, res) => {
   res.send(greeting);
 });
 
+app.get('/sum', (req, res) => {
+  let { a, b } = req.query;
+
+  if (!a) {
+    res.send('Insert the value of a');
+  } else {
+    a = Number(a);
+    if (isNaN(a) === true) {
+      res.send(`'a' should be a number`);
+    }
+  }
+
+  if (!b) {
+    res.send('Insert the value of b');
+  } else {
+    b = Number(b);
+    if (isNaN(b) === true) {
+      res.send(`'b' should be a number`);
+    }
+  }
+
+  res.send(`The sum of ${a} and ${b} is ${a + b}`);
+});
 app.listen(8000, () => {
   console.log('Express server is listening on port 8000!');
 });
