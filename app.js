@@ -108,6 +108,40 @@ app.get('/cipher', (req, res) => {
   }
   res.send(cipher);
 });
+
+app.get('/lotto', (req, res) => {
+  const { numbers } = req.query;
+  let lotto = [];
+  let match = 0;
+  if (!numbers) {
+    res.send('You should insert numbers');
+  }
+  if (numbers.length < 6) {
+    res.send('You should insert 6 numbers');
+  }
+  for (i = 0; i < 6; i++) {
+    lotto.push(Math.ceil(Math.random() * Math.floor(20)));
+  }
+  numbers.forEach((number) => {
+    number = Number(number);
+    if (isNaN(number) === true) {
+      res.send('Each numbers value should be of number type');
+    }
+    if (number < 1 || number > 20) {
+      res.send('Number should be between 1 and 20');
+    }
+    if (lotto.includes(number)) match++;
+  });
+  if (match < 4) {
+    res.send('Sorry, you lose');
+  } else if (match === 4) {
+    res.send('Congratulations, you win a free ticket');
+  } else if (match === 5) {
+    res.send('Congratulations! You win $100!');
+  } else {
+    res.send('Wow! Unbelievable! You could have won the mega millions!');
+  }
+});
 app.listen(8000, () => {
   console.log('Express server is listening on port 8000!');
 });
